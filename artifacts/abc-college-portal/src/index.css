@@ -17,14 +17,14 @@
 }
 
 :root {
-  --background: 220 33% 98%;
+  --background: 216 33% 97%;
   --foreground: 215 28% 17%;
   --border: 226 38% 91%;
   --primary: 243 75% 59%;
   --card: 0 0% 100%;
   --muted: 220 14% 96%;
   --ring: 243 75% 59%;
-  --soft-bg: #F9FAFB;
+  --soft-bg: #F6F8FB;
 }
 
 .dark {
@@ -51,9 +51,9 @@ body {
 
 .input {
   width: 100%;
-  border-radius: 1rem;
-  border: 1px solid rgba(99,102,241,.18);
-  background: rgba(255,255,255,.78);
+  border-radius: .75rem;
+  border: 1px solid #dbe3ef;
+  background: #fff;
   padding: .85rem 1rem;
   color: #1F2937;
   outline: none;
@@ -88,21 +88,21 @@ body {
   justify-content: center;
   gap: .5rem;
   border: 0;
-  border-radius: 1rem;
-  font-weight: 800;
+  border-radius: .75rem;
+  font-weight: 700;
   transition: transform .2s, box-shadow .2s, background .2s, color .2s;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #4F46E5, #7c3aed, #ec4899);
+  background: #3730a3;
   color: white;
   padding: .85rem 1.2rem;
-  box-shadow: 0 18px 35px rgba(79,70,229,.25);
+  box-shadow: 0 10px 22px rgba(55,48,163,.18);
 }
 
 .btn-secondary {
-  background: rgba(79,70,229,.09);
-  color: #4F46E5;
+  background: #eef2ff;
+  color: #3730a3;
   padding: .7rem 1rem;
 }
 .dark .btn-secondary { background: rgba(255,255,255,.10); color: #c4b5fd; }
@@ -110,9 +110,10 @@ body {
 .icon-btn {
   min-width: 2.8rem;
   height: 2.8rem;
-  background: rgba(255,255,255,.8);
+  background: #fff;
   color: #334155;
-  box-shadow: 0 10px 25px rgba(15,23,42,.08);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 6px 15px rgba(15,23,42,.06);
 }
 .dark .icon-btn { background: rgba(255,255,255,.08); color: white; }
 
@@ -124,7 +125,7 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .data-table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 .65rem;
+  border-spacing: 0 .45rem;
   font-size: .92rem;
 }
 .data-table th {
@@ -136,7 +137,7 @@ button:disabled { opacity: .55; cursor: not-allowed; }
   padding: 0 .85rem;
 }
 .data-table td {
-  background: rgba(248,250,252,.86);
+  background: #f8fafc;
   padding: .9rem .85rem;
 }
 .dark .data-table td { background: rgba(255,255,255,.07); }

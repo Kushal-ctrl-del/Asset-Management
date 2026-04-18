@@ -10,6 +10,8 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - Persistent application data is stored in browser localStorage and seeded from `artifacts/abc-college-portal/src/data/*.json` on first load.
 - Session login tokens and temporary UI state use sessionStorage, except Remember Me stores the token in localStorage.
 - Demo credentials: `student@abc.edu / student123`, `faculty@abc.edu / faculty123`, `admin@abc.edu / admin123`.
+- Faculty users now get role-specific dashboard content, attendance marking, own timetable, notifications, LMS uploads, and assignment creation using localStorage keys such as `abc_faculty_attendance` and `abc_lms_uploads`.
+- The app uses a responsive sidebar drawer on mobile and a more formal professional UI style with clean cards, solid primary buttons, and reduced decorative gradients.
 
 ## Stack
 

@@ -59,6 +59,8 @@ type Book = { id: string; title: string; author: string; category: string; avail
 type TimetableEntry = { id: string; day: string; time: string; subject: string; room: string; type: "Class" | "Exam"; semester: number };
 type Submission = { id: string; assignmentId: string; studentId: string; fileName: string; fileData: string; submittedAt: string; status: string; marks?: number };
 type DocumentRecord = { id: string; userId: string; type: string; name: string; data: string };
+type FacultyAttendanceRecord = { id: string; facultyId: string; subject: string; date: string; status: "Conducted" | "Cancelled" | "Substitution"; notes: string };
+type LmsUpload = { id: string; facultyId: string; subject: string; title: string; fileName: string; fileData: string; uploadedAt: string };
 
 const roleOptions = ["Student", "Faculty", "Admin"] as const;
 const navItems = [
@@ -113,7 +115,7 @@ function daysUntil(date: string) {
 }
 
 function cardClass(extra = "") {
-  return `rounded-3xl border border-white/60 bg-white/75 p-5 shadow-xl shadow-indigo-100/50 backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-2xl dark:border-white/10 dark:bg-slate-900/70 dark:shadow-black/20 ${extra}`;
+  return `rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg dark:border-white/10 dark:bg-slate-900 ${extra}`;
 }
 
 function StatCard({ icon: Icon, label, value, sub, color }: { icon: any; label: string; value: string; sub: string; color: string }) {
@@ -139,18 +141,18 @@ function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?
 function AuthShell({ children }: { children: React.ReactNode }) {
   return (
     <main className="grid min-h-screen bg-slate-950 lg:grid-cols-[1.05fr_.95fr]">
-      <section className="relative hidden overflow-hidden p-12 text-white lg:block">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,.45),transparent_30%),radial-gradient(circle_at_70%_30%,rgba(236,72,153,.45),transparent_30%),linear-gradient(135deg,#4F46E5,#7c3aed,#ec4899)]" />
+      <section className="relative hidden overflow-hidden bg-slate-950 p-12 text-white lg:block">
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,#111827,#1e3a8a)]" />
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 flex h-full flex-col justify-between">
           <div>
-            <div className="mb-12 inline-flex items-center gap-3 rounded-full border border-white/30 bg-white/15 px-5 py-3 backdrop-blur">
+            <div className="mb-12 inline-flex items-center gap-3 rounded-xl border border-white/20 bg-white/10 px-5 py-3 backdrop-blur">
               <GraduationCap /> ABC College
             </div>
-            <h1 className="font-heading text-6xl font-black leading-tight">Empowering Minds, Shaping Futures</h1>
-            <p className="mt-6 max-w-xl text-lg text-indigo-50">A secure academic command center for attendance, marks, assignments, fees, library records and campus communication.</p>
+            <h1 className="font-heading text-5xl font-black leading-tight">Academic Operations Portal</h1>
+            <p className="mt-6 max-w-xl text-lg text-slate-200">A secure workspace for students, faculty, attendance, assignments, LMS materials and campus communication.</p>
           </div>
           <div className="grid grid-cols-3 gap-4">
-            {["99% uptime", "8 departments", "24/7 portal"].map((item) => <div key={item} className="rounded-3xl bg-white/15 p-5 backdrop-blur"><span className="font-semibold">{item}</span></div>)}
+            {["99% uptime", "8 departments", "24/7 portal"].map((item) => <div key={item} className="rounded-2xl border border-white/10 bg-white/10 p-5 backdrop-blur"><span className="font-semibold">{item}</span></div>)}
           </div>
         </motion.div>
       </section>
@@ -185,10 +187,10 @@ function LoginPage() {
   ];
   return (
     <AuthShell>
-      <motion.form initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} onSubmit={submit} className="w-full max-w-md rounded-[2rem] border border-white/60 bg-white/85 p-8 shadow-2xl backdrop-blur dark:border-white/10 dark:bg-slate-900/80">
+      <motion.form initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} onSubmit={submit} className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-xl dark:border-white/10 dark:bg-slate-900">
         <div className="mb-8">
-          <div className="mb-4 inline-flex rounded-2xl bg-indigo-600 p-3 text-white"><ShieldCheck /></div>
-          <h1 className="font-heading text-3xl font-bold text-slate-950 dark:text-white">Student Portal Login</h1>
+          <div className="mb-4 inline-flex rounded-xl bg-indigo-700 p-3 text-white"><ShieldCheck /></div>
+          <h1 className="font-heading text-3xl font-bold text-slate-950 dark:text-white">ABC College Login</h1>
           <p className="mt-2 text-slate-500 dark:text-slate-400">Access your personalized ABC College workspace.</p>
         </div>
         <label className="field-label">Email</label>
@@ -205,7 +207,7 @@ function LoginPage() {
           <Link className="font-semibold text-indigo-600" to="/forgot-password">Forgot Password</Link>
         </div>
         <button className="btn-primary w-full" disabled={loading}>{loading ? "Signing in..." : "Sign in"}</button>
-        <div className="mt-6 rounded-2xl bg-indigo-50 p-4 text-sm dark:bg-indigo-950/40">
+        <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm dark:border-white/10 dark:bg-white/5">
           <p className="mb-3 font-semibold text-slate-800 dark:text-white">Demo credentials</p>
           {demo.map(([r, e, p]) => <button type="button" key={r} onClick={() => { setRole(r as any); setEmail(e); setPassword(p); }} className="mb-2 flex w-full justify-between rounded-xl bg-white px-3 py-2 text-left dark:bg-slate-800"><span>{r}</span><span className="text-slate-500">{e} / {p}</span></button>)}
         </div>
@@ -263,23 +265,26 @@ function AppLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(() => sessionStorage.getItem("abc_sidebar_collapsed") === "true");
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [notifications] = useStore<NotificationItem[]>("abc_notifications", []);
   const [courses] = useStore<Course[]>("abc_courses", []);
+  const visibleNavItems = currentUser?.role === "Faculty" ? navItems.filter(([path]) => ["/dashboard", "/attendance", "/timetable", "/assignments", "/notifications", "/profile"].includes(path as string)) : navItems;
   const unread = notifications.filter((n) => currentUser && !n.readBy.includes(currentUser.id)).length;
   const results = query ? courses.filter((course) => course.name.toLowerCase().includes(query.toLowerCase()) || course.code.toLowerCase().includes(query.toLowerCase())).slice(0, 5) : [];
   const toggleCollapse = () => { const next = !collapsed; setCollapsed(next); sessionStorage.setItem("abc_sidebar_collapsed", String(next)); };
   return (
     <div className="min-h-screen bg-[var(--soft-bg)] text-slate-800 dark:bg-slate-950 dark:text-slate-100">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-xl focus:bg-white focus:p-3">Skip to content</a>
-      <aside className={`fixed left-0 top-0 z-30 hidden h-screen border-r border-white/60 bg-white/75 p-4 shadow-xl backdrop-blur-xl transition-all dark:border-white/10 dark:bg-slate-900/80 lg:block ${collapsed ? "w-24" : "w-72"}`}>
-        <div className="mb-8 flex items-center justify-between"><div className="flex items-center gap-3"><span className="rounded-2xl bg-gradient-to-br from-indigo-600 to-pink-500 p-3 text-white"><GraduationCap /></span>{!collapsed && <div><h2 className="font-heading font-bold">ABC College</h2><p className="text-xs text-slate-500">Student Portal</p></div>}</div><button aria-label="Collapse sidebar" onClick={toggleCollapse}>{collapsed ? <ChevronRight /> : <ChevronLeft />}</button></div>
-        <nav className="space-y-2">{navItems.map(([path, label, Icon]) => <Link key={path} title={label} to={path} className={`flex items-center gap-3 rounded-2xl px-4 py-3 transition ${location.pathname === path ? "bg-indigo-600 text-white shadow-lg" : "hover:bg-indigo-50 dark:hover:bg-white/10"}`}><Icon size={20} />{!collapsed && <span>{label}</span>}</Link>)}</nav>
+      {mobileOpen && <button aria-label="Close sidebar overlay" className="fixed inset-0 z-20 bg-slate-950/40 lg:hidden" onClick={() => setMobileOpen(false)} />}
+      <aside className={`fixed left-0 top-0 z-30 h-screen border-r border-slate-200 bg-white p-4 shadow-xl transition-all dark:border-white/10 dark:bg-slate-900 ${mobileOpen ? "block w-80" : "hidden"} lg:block ${collapsed ? "lg:w-24" : "lg:w-72"}`}>
+        <div className="mb-8 flex items-center justify-between"><div className="flex items-center gap-3"><span className="rounded-xl bg-indigo-700 p-3 text-white"><GraduationCap /></span>{(!collapsed || mobileOpen) && <div><h2 className="font-heading font-bold">ABC College</h2><p className="text-xs text-slate-500">{currentUser?.role} Portal</p></div>}</div><div className="flex gap-2"><button className="lg:hidden" aria-label="Close sidebar" onClick={() => setMobileOpen(false)}><X /></button><button className="hidden lg:block" aria-label="Collapse sidebar" onClick={toggleCollapse}>{collapsed ? <ChevronRight /> : <ChevronLeft />}</button></div></div>
+        <nav className="space-y-2">{visibleNavItems.map(([path, label, Icon]) => <Link key={path} title={label} to={path} onClick={() => setMobileOpen(false)} className={`flex items-center gap-3 rounded-xl px-4 py-3 transition ${location.pathname === path ? "bg-indigo-700 text-white shadow-sm" : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"}`}><Icon size={20} />{(!collapsed || mobileOpen) && <span>{label}</span>}</Link>)}</nav>
       </aside>
       <div className={`transition-all ${collapsed ? "lg:pl-24" : "lg:pl-72"}`}>
         <header className="sticky top-0 z-20 border-b border-white/60 bg-white/70 px-4 py-4 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/70 md:px-8">
           <div className="flex items-center gap-4">
-            <button className="lg:hidden" aria-label="Menu"><Menu /></button>
+            <button className="icon-btn lg:hidden" aria-label="Open sidebar" onClick={() => setMobileOpen(true)}><Menu /></button>
             <div className="relative flex-1"><Search className="absolute left-4 top-3 text-slate-400" size={18} /><input className="input pl-11" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search courses and records" />{results.length > 0 && <div className="absolute z-40 mt-2 w-full rounded-2xl bg-white p-2 shadow-2xl dark:bg-slate-900">{results.map((course) => <button key={course.id} className="block w-full rounded-xl px-4 py-2 text-left hover:bg-indigo-50 dark:hover:bg-white/10" onClick={() => { setQuery(""); navigate("/academics"); }}>{course.code} - {course.name}</button>)}</div>}</div>
             <button aria-label="Toggle dark mode" className="icon-btn" onClick={toggleTheme}>{theme === "dark" ? <Sun /> : <Moon />}</button>
             <button aria-label="Notifications" className="icon-btn relative" onClick={() => navigate("/notifications")}><Bell />{unread > 0 && <span className="absolute -right-1 -top-1 rounded-full bg-pink-500 px-1.5 text-xs text-white">{unread}</span>}</button>
@@ -298,6 +303,109 @@ function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) 
   return <div className="mb-6"><h1 className="font-heading text-3xl font-black text-slate-950 dark:text-white">{title}</h1><p className="mt-1 text-slate-500 dark:text-slate-400">{subtitle}</p></div>;
 }
 
+function facultyCourses(user: User | null, courses: Course[]) {
+  if (!user || user.role === "Student") return courses;
+  return courses.filter((course) => course.faculty === user.name || course.faculty.includes(user.name.split(" ").slice(-1)[0]));
+}
+
+function facultyStudents(users: User[]) {
+  return users.filter((user) => user.role === "Student");
+}
+
+function FacultyDashboardPage() {
+  const { currentUser } = useAuthContext();
+  const [courses] = useStore<Course[]>("abc_courses", []);
+  const [entries] = useStore<TimetableEntry[]>("abc_timetable", []);
+  const [items] = useStore<NotificationItem[]>("abc_notifications", []);
+  const [attendance] = useStore<FacultyAttendanceRecord[]>("abc_faculty_attendance", []);
+  const subjects = facultyCourses(currentUser, courses);
+  const subjectNames = subjects.map((course) => course.name);
+  const myClasses = entries.filter((entry) => entry.type === "Class" && subjectNames.includes(entry.subject));
+  const conducted = attendance.filter((item) => item.facultyId === currentUser?.id && item.status === "Conducted").length;
+  const chart = subjects.map((course) => ({ subject: course.code, completion: course.progress }));
+  return <>
+    <SectionTitle title={`Faculty workspace, ${currentUser?.name}`} subtitle="Your teaching schedule, subject activity, attendance and announcements." />
+    <div className="mb-6 grid gap-4 lg:grid-cols-4">
+      <StatCard icon={BookOpen} label="Assigned subjects" value={String(subjects.length)} sub="current term" color="from-indigo-700 to-indigo-700" />
+      <StatCard icon={CalendarDays} label="Weekly classes" value={String(myClasses.length)} sub="timetable" color="from-slate-700 to-slate-700" />
+      <StatCard icon={CheckCircle2} label="Classes conducted" value={String(conducted)} sub="marked by you" color="from-emerald-600 to-emerald-600" />
+      <StatCard icon={Bell} label="Notifications" value={String(items.length)} sub="campus updates" color="from-cyan-700 to-cyan-700" />
+    </div>
+    <div className="grid gap-6 xl:grid-cols-[1.2fr_.8fr]">
+      <div className={cardClass()}><h2 className="mb-4 font-heading text-xl font-bold">Subject progress</h2><div className="h-72"><ResponsiveContainer><BarChart data={chart}><CartesianGrid strokeDasharray="3 3" /><XAxis dataKey="subject" /><YAxis /><Tooltip /><Bar dataKey="completion" fill="#1d4ed8" radius={[8, 8, 0, 0]} /></BarChart></ResponsiveContainer></div></div>
+      <div className={cardClass()}><h2 className="mb-4 font-heading text-xl font-bold">Today's teaching plan</h2><div className="space-y-3">{myClasses.slice(0, 5).map((entry) => <div key={entry.id} className="rounded-xl border border-slate-200 p-4 dark:border-white/10"><p className="text-sm text-slate-500">{entry.day} at {entry.time} • {entry.room}</p><p className="font-semibold">{entry.subject}</p></div>)}{myClasses.length === 0 && <p className="text-slate-500">No assigned classes found.</p>}</div></div>
+    </div>
+  </>;
+}
+
+function FacultyAttendancePage() {
+  const { currentUser } = useAuthContext();
+  const [courses] = useStore<Course[]>("abc_courses", []);
+  const [users] = useStore<User[]>("abc_users", []);
+  const [studentAttendance, setStudentAttendance] = useStore<AttendanceRecord[]>("abc_attendance", []);
+  const [facultyAttendance, setFacultyAttendance] = useStore<FacultyAttendanceRecord[]>("abc_faculty_attendance", []);
+  const subjects = facultyCourses(currentUser, courses);
+  const students = facultyStudents(users);
+  const [subject, setSubject] = useState(subjects[0]?.name || "");
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [notes, setNotes] = useState("");
+  const markClass = (status: FacultyAttendanceRecord["status"]) => {
+    if (!subject) return toast.error("Select a subject first.");
+    setFacultyAttendance([{ id: crypto.randomUUID(), facultyId: currentUser?.id || "", subject, date, status, notes }, ...facultyAttendance]);
+    toast.success("Faculty attendance updated.");
+  };
+  const markStudent = (studentId: string, status: AttendanceRecord["status"]) => {
+    if (!subject) return toast.error("Select a subject first.");
+    const next = studentAttendance.filter((row) => !(row.studentId === studentId && row.subject === subject && row.date === date));
+    setStudentAttendance([{ id: crypto.randomUUID(), studentId, subject, date, status }, ...next]);
+    toast.success("Student attendance marked.");
+  };
+  const myRows = facultyAttendance.filter((row) => row.facultyId === currentUser?.id);
+  return <>
+    <SectionTitle title="Faculty attendance" subtitle="Mark your class status and record student attendance for assigned subjects." />
+    <div className="grid gap-6 xl:grid-cols-[.9fr_1.1fr]">
+      <div className={cardClass()}><h2 className="mb-4 font-heading text-xl font-bold">Class attendance</h2><label className="field-label">Subject</label><select className="input" value={subject} onChange={(e) => setSubject(e.target.value)}>{subjects.map((course) => <option key={course.id}>{course.name}</option>)}</select><label className="field-label mt-4">Date</label><input className="input" type="date" value={date} onChange={(e) => setDate(e.target.value)} /><label className="field-label mt-4">Notes</label><textarea className="input min-h-24" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Class topic, substitution note, or reason for cancellation" /><div className="mt-4 grid grid-cols-3 gap-2"><button className="btn-primary" onClick={() => markClass("Conducted")}>Conducted</button><button className="btn-secondary" onClick={() => markClass("Cancelled")}>Cancelled</button><button className="btn-secondary" onClick={() => markClass("Substitution")}>Substitution</button></div></div>
+      <div className={cardClass()}><h2 className="mb-4 font-heading text-xl font-bold">Mark student attendance</h2><table className="data-table"><thead><tr><th>Student</th><th>Roll No</th><th>Action</th></tr></thead><tbody>{students.map((student) => <tr key={student.id}><td>{student.name}</td><td>{student.rollNo}</td><td><div className="flex flex-wrap gap-2"><button className="btn-secondary" onClick={() => markStudent(student.id, "Present")}>Present</button><button className="btn-secondary" onClick={() => markStudent(student.id, "Absent")}>Absent</button><button className="btn-secondary" onClick={() => markStudent(student.id, "Leave")}>Leave</button></div></td></tr>)}</tbody></table></div>
+    </div>
+    <div className={`${cardClass()} mt-6`}><h2 className="mb-4 font-heading text-xl font-bold">My attendance history</h2><table className="data-table"><thead><tr><th>Date</th><th>Subject</th><th>Status</th><th>Notes</th></tr></thead><tbody>{myRows.map((row) => <tr key={row.id}><td>{row.date}</td><td>{row.subject}</td><td><span className="badge">{row.status}</span></td><td>{row.notes}</td></tr>)}</tbody></table></div>
+  </>;
+}
+
+function FacultyTimetablePage() {
+  const { currentUser } = useAuthContext();
+  const [courses] = useStore<Course[]>("abc_courses", []);
+  const [entries] = useStore<TimetableEntry[]>("abc_timetable", []);
+  const subjects = facultyCourses(currentUser, courses).map((course) => course.name);
+  const myEntries = entries.filter((entry) => subjects.includes(entry.subject));
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  return <><SectionTitle title="My timetable" subtitle="Faculty-specific teaching and exam schedule." /><div className="mb-4 flex gap-3"><button className="btn-secondary" onClick={() => window.print()}>Print</button><button className="btn-primary" onClick={() => downloadPdf("Faculty Timetable", myEntries.map((entry) => `${entry.day} ${entry.time} ${entry.subject} ${entry.room}`))}>Download PDF</button></div><div className="grid gap-4 lg:grid-cols-6">{days.map((day) => <div key={day} className={cardClass()}><h3 className="mb-3 font-heading font-bold">{day}</h3>{myEntries.filter((entry) => entry.day === day).map((entry) => <div key={entry.id} className="mb-3 rounded-xl bg-slate-900 p-4 text-white dark:bg-indigo-700"><p className="text-sm opacity-80">{entry.time} • {entry.room}</p><p className="font-semibold">{entry.subject}</p></div>)}</div>)}</div></>;
+}
+
+function FacultyAssignmentsPage() {
+  const { currentUser } = useAuthContext();
+  const [courses] = useStore<Course[]>("abc_courses", []);
+  const [assignments, setAssignments] = useStore<Assignment[]>("abc_assignments", []);
+  const [uploads, setUploads] = useStore<LmsUpload[]>("abc_lms_uploads", []);
+  const subjects = facultyCourses(currentUser, courses);
+  const [assignment, setAssignment] = useState({ subject: subjects[0]?.name || "", title: "", brief: "", deadline: "" });
+  const [lms, setLms] = useState({ subject: subjects[0]?.name || "", title: "" });
+  const createAssignment = () => {
+    if (!assignment.subject || !assignment.title || !assignment.deadline) return toast.error("Complete assignment details.");
+    setAssignments([{ id: crypto.randomUUID(), subject: assignment.subject, title: assignment.title, brief: assignment.brief, deadline: assignment.deadline, status: "Pending" }, ...assignments]);
+    setAssignment({ subject: subjects[0]?.name || "", title: "", brief: "", deadline: "" });
+    toast.success("Assignment added for your subject.");
+  };
+  const uploadLms = async (file?: File) => {
+    if (!file || !lms.subject || !lms.title) return toast.error("Add LMS title, subject and file.");
+    setUploads([{ id: crypto.randomUUID(), facultyId: currentUser?.id || "", subject: lms.subject, title: lms.title, fileName: file.name, fileData: await fileToBase64(file), uploadedAt: new Date().toISOString() }, ...uploads]);
+    setLms({ subject: subjects[0]?.name || "", title: "" });
+    toast.success("LMS material uploaded.");
+  };
+  const myAssignments = assignments.filter((item) => subjects.some((course) => course.name === item.subject));
+  const myUploads = uploads.filter((item) => item.facultyId === currentUser?.id);
+  return <><SectionTitle title="Faculty LMS & assignments" subtitle="Upload subject materials and create assignments for your timetable subjects." /><div className="grid gap-6 xl:grid-cols-2"><div className={cardClass()}><h2 className="mb-4 font-heading text-xl font-bold">Add assignment</h2><select className="input" value={assignment.subject} onChange={(e) => setAssignment({ ...assignment, subject: e.target.value })}>{subjects.map((course) => <option key={course.id}>{course.name}</option>)}</select><input className="input mt-3" placeholder="Assignment title" value={assignment.title} onChange={(e) => setAssignment({ ...assignment, title: e.target.value })} /><textarea className="input mt-3 min-h-24" placeholder="Brief" value={assignment.brief} onChange={(e) => setAssignment({ ...assignment, brief: e.target.value })} /><input className="input mt-3" type="datetime-local" value={assignment.deadline} onChange={(e) => setAssignment({ ...assignment, deadline: e.target.value })} /><button className="btn-primary mt-4" onClick={createAssignment}>Publish assignment</button></div><div className={cardClass()}><h2 className="mb-4 font-heading text-xl font-bold">Upload LMS material</h2><select className="input" value={lms.subject} onChange={(e) => setLms({ ...lms, subject: e.target.value })}>{subjects.map((course) => <option key={course.id}>{course.name}</option>)}</select><input className="input mt-3" placeholder="Material title" value={lms.title} onChange={(e) => setLms({ ...lms, title: e.target.value })} /><label className="mt-4 flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-slate-300 p-6 text-slate-600 dark:border-white/20 dark:text-slate-300"><Upload size={18} /> Choose LMS file<input className="hidden" type="file" onChange={(e) => uploadLms(e.target.files?.[0])} /></label></div></div><div className="mt-6 grid gap-6 xl:grid-cols-2"><div className={cardClass()}><h2 className="mb-4 font-heading text-xl font-bold">Subject assignments</h2>{myAssignments.map((item) => <div key={item.id} className="mb-3 rounded-xl border border-slate-200 p-4 dark:border-white/10"><p className="text-sm text-indigo-700 dark:text-indigo-300">{item.subject}</p><p className="font-semibold">{item.title}</p><p className="text-sm text-slate-500">Deadline: {item.deadline}</p></div>)}</div><div className={cardClass()}><h2 className="mb-4 font-heading text-xl font-bold">LMS uploads</h2>{myUploads.map((item) => <div key={item.id} className="mb-3 rounded-xl border border-slate-200 p-4 dark:border-white/10"><p className="text-sm text-indigo-700 dark:text-indigo-300">{item.subject}</p><p className="font-semibold">{item.title}</p><p className="text-sm text-slate-500">{item.fileName}</p></div>)}</div></div></>;
+}
+
 function DashboardPage() {
   const { currentUser } = useAuthContext();
   const [attendance] = useStore<AttendanceRecord[]>("abc_attendance", []);
@@ -314,6 +422,7 @@ function DashboardPage() {
   const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
   const chart = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr"].map((month, index) => ({ month, attendance: [78, 82, 84, 80, 87, attendancePercent][index] }));
   const greeting = new Date().getHours() < 12 ? "Good morning" : new Date().getHours() < 17 ? "Good afternoon" : "Good evening";
+  if (currentUser?.role === "Faculty") return <FacultyDashboardPage />;
   return (
     <>
       <SectionTitle title={`${greeting}, ${currentUser?.name?.split(" ")[0]}`} subtitle="Here is your academic snapshot for today." />
@@ -343,7 +452,8 @@ function AttendancePage() {
   const [attendance] = useStore<AttendanceRecord[]>("abc_attendance", []);
   const [leaves, setLeaves] = useStore<LeaveRequest[]>("abc_leave_requests", []);
   const [form, setForm] = useState({ reason: "", from: "", to: "", type: "Medical" as "Medical" | "Personal", documentName: "", documentData: "" });
-  const records = attendance.filter((a) => a.studentId === "s1");
+  if (currentUser?.role === "Faculty") return <FacultyAttendancePage />;
+  const records = attendance.filter((a) => a.studentId === currentUser?.id);
   const percent = Math.round((records.filter((a) => a.status === "Present").length / Math.max(records.length, 1)) * 100);
   const subjects = Array.from(new Set(records.map((r) => r.subject))).map((subject) => { const rows = records.filter((r) => r.subject === subject); const attended = rows.filter((r) => r.status === "Present").length; return { subject, attended, total: rows.length, pct: Math.round((attended / rows.length) * 100) }; });
   const submit = () => { if (!form.reason || !form.from || !form.to) return toast.error("Complete leave request details."); setLeaves([{ id: crypto.randomUUID(), studentId: currentUser?.id || "s1", name: currentUser?.name || "Student", status: "Pending", createdAt: new Date().toISOString(), ...form }, ...leaves]); setForm({ reason: "", from: "", to: "", type: "Medical", documentName: "", documentData: "" }); toast.success("Leave request submitted."); };
@@ -365,7 +475,9 @@ function FeesPage() {
 }
 
 function TimetablePage() {
+  const { currentUser } = useAuthContext();
   const [entries] = useStore<TimetableEntry[]>("abc_timetable", []);
+  if (currentUser?.role === "Faculty") return <FacultyTimetablePage />;
   const [sem, setSem] = useState(4);
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const classes = entries.filter((e) => e.type === "Class" && e.semester === sem);
@@ -377,6 +489,7 @@ function AssignmentsPage() {
   const { currentUser } = useAuthContext();
   const [assignments] = useStore<Assignment[]>("abc_assignments", []);
   const [submissions, setSubmissions] = useStore<Submission[]>("abc_assignment_submissions", []);
+  if (currentUser?.role === "Faculty") return <FacultyAssignmentsPage />;
   const submitFile = async (assignmentId: string, file?: File) => { if (!file) return; const data = await fileToBase64(file); setSubmissions([{ id: crypto.randomUUID(), assignmentId, studentId: currentUser?.id || "s1", fileName: file.name, fileData: data, submittedAt: new Date().toISOString(), status: "Submitted" }, ...submissions]); toast.success("Assignment submitted."); };
   return <><SectionTitle title="Assignments" subtitle="Submit work, track deadlines and download briefs." /><div className="grid gap-4 lg:grid-cols-3">{assignments.map((a) => <div key={a.id} className={cardClass(daysUntil(a.deadline) <= 1 ? "ring-2 ring-rose-400" : "")}><p className="text-sm text-indigo-600">{a.subject}</p><h3 className="mt-1 font-heading text-xl font-bold">{a.title}</h3><p className="mt-3 text-sm text-slate-500">{a.brief}</p><p className="mt-4 font-semibold">Due in {daysUntil(a.deadline)} days</p><label className="mt-4 flex cursor-pointer items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-indigo-300 p-5"><Upload size={18} /> Upload submission<input className="hidden" type="file" onChange={(e) => submitFile(a.id, e.target.files?.[0])} /></label><button className="btn-secondary mt-3" onClick={() => downloadPdf(`${a.title} Brief`, [a.brief, `Deadline: ${a.deadline}`])}>Download brief</button></div>)}</div><div className={`${cardClass()} mt-6`}><h2 className="mb-4 font-heading text-xl font-bold">Submitted work</h2><table className="data-table"><thead><tr><th>Date</th><th>Assignment</th><th>File</th><th>Status</th></tr></thead><tbody>{submissions.map((s) => <tr key={s.id}><td>{new Date(s.submittedAt).toLocaleString()}</td><td>{assignments.find((a) => a.id === s.assignmentId)?.title}</td><td>{s.fileName}</td><td><span className="badge">{s.status}</span></td></tr>)}</tbody></table></div></>;
 }
