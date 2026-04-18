@@ -1,0 +1,277 @@
+You are a full‑stack front-end engineer / UI developer AI tasked with building a complete, production-ready, fully functional Student Management System single-repo web application for “ABC College” (tagline: “Empowering Minds, Shaping Futures”). Follow these instructions exactly — do not skip features, do not leave TODOs, do not create placeholder pages. Think step-by-step and deliver a finished repository that can be run locally and that meets the strict acceptance criteria below.
+
+Project summary (goal)
+
+- Single-page React 18 + Vite + TypeScript web app. No backend. All persistent application data stored in browser localStorage; ephemeral/session data (login token, UI temp state) in sessionStorage.
+- Pixel-perfect, animated, accessible, responsive, production-quality UI using TailwindCSS + shadcn/ui. Framer Motion for animations. Lucide React icons. Recharts for charts. React Router v6 for routing. React Hook Form + Zod for forms. Sonner for toasts. React Context API for global state.
+- Color palette, fonts, and visual design specified below. Create seed data files and hydrate localStorage on first load.
+
+Mandatory tech & packages
+
+- React 18 + Vite + TypeScript
+- TailwindCSS + shadcn/ui components
+- Framer Motion
+- Lucide React
+- React Router v6
+- Recharts
+- react-hook-form + @hookform/resolvers + zod
+- sonner
+- A tiny PDF generator library (e.g., jsPDF or html2canvas) for downloadable receipts/IDs (client-side only)
+- No backend or external DB. No server code. No external APIs except for fonts/icons/CDNs if needed.
+
+Design system
+
+- Colors:
+  - Primary Deep Indigo: #4F46E5
+  - Emerald: #10B981
+  - Soft White: #F9FAFB
+  - Charcoal: #1F2937
+  - Accent gradient: Indigo → Purple → Pink (use Tailwind gradient utilities/custom CSS)
+- Fonts: Inter for body, Poppins for headings (import via Google Fonts)
+- UI style: hybrid glassmorphism + soft neumorphism cards, modern micro‑interactions, skeleton loaders, accessible ARIA attributes
+- Animations: Framer Motion on route transitions, buttons, cards, modals, and interactive components
+- Dark mode: toggle saved in localStorage, fully theme-aware components
+- App title and favicon: "ABC College | Student Portal"
+
+File system & architecture (must be created exactly)
+
+- src/
+  - components/
+    - ui/ (shadcn adapted components: Button, Input, Select, Modal, Tooltip, Tabs, Accordion, etc.)
+    - layout/ (Sidebar.tsx, Navbar.tsx, Footer.tsx)
+    - shared/ (Cards, Charts wrappers, Modals, FileUpload, Skeletons)
+  - pages/
+    - auth/ (Login.tsx, ForgotPassword.tsx, ResetPassword.tsx)
+    - dashboard/
+    - academics/
+    - attendance/
+    - fees/
+    - timetable/
+    - assignments/
+    - library/
+    - notifications/
+    - profile/
+    - NotFound.tsx
+  - context/
+    - AuthContext.tsx
+    - ThemeContext.tsx
+  - data/
+    - students.json
+    - courses.json
+    - marks.json
+    - attendance.json
+    - timetable.json
+    - books.json
+    - notifications.json
+    - fees.json
+    - assignments.json
+  - lib/
+    - storage.ts (required helpers below)
+    - utils.ts
+    - mockApi.ts (simulate latency for UX and simulate OTP / payment flows)
+  - hooks/
+    - useAuth.ts
+    - useLocalStorage.ts
+  - types/
+    - index.ts (TypeScript interfaces/types)
+  - App.tsx
+  - main.tsx
+  - index.css (Tailwind base + custom styles)
+- README.md with setup, run, build, demo credentials
+- favicon.ico and appropriate meta tags
+
+Storage helpers (exact file: src/lib/storage.ts)
+
+- Exported helpers:
+  - getItem(key: string): T | null
+  - setItem(key: string, value: T): void
+  - removeItem(key: string): void
+  - hydrateFromSeed(seedPath: string, storageKey: string): Promise
+- Behavior:
+  - hydrateFromSeed reads the corresponding seed JSON in /src/data/ and writes it to localStorage only if the storageKey is empty.
+  - All CRUD operations across the app must use these helpers (or useLocalStorage hook that wraps them).
+  - sessionStorage usage: login token, current UI ephemeral states (e.g., collapsed sidebar, last selected tab) — stored via same helper patterns or a session wrapper.
+
+Seed data (pre-populate richly)
+
+- Provide realistic sample data:
+  - 3 demo users per role (Student, Faculty, Admin)
+  - 8+ subjects
+  - 4 semesters of marks for sample students
+  - 20+ attendance records (daily logs)
+  - 10+ notifications
+  - 15+ books
+  - 5+ assignments
+  - 6+ fees transactions
+  - timetable entries for weekly classes and exams
+- Put in /src/data/*.json. App must hydrate these into localStorage on first load.
+
+Security & session simulation
+
+- Authentication is simulated client-side:
+  - Login accepts email + password and role selection. Validate against users in localStorage seed.
+  - On successful login, store a session token in sessionStorage and set currentUser in localStorage (or AuthContext).
+  - Role-based route protection: restrict pages/components per role.
+  - Forgot password flow: simulate sending an OTP (mockApi) then accept code and allow reset (update user password in localStorage). OTP must expire in the simulated flow.
+  - Demo credentials displayed on login screen:
+    - [student@abc.edu](mailto:student@abc.edu) / student123
+    - [faculty@abc.edu](mailto:faculty@abc.edu) / faculty123
+    - [admin@abc.edu](mailto:admin@abc.edu) / admin123
+
+Explicit app modules and functionality (implement all fully)
+
+MODULE 1 — Authentication
+
+- Split-screen login page:
+  - Left: animated gradient hero, ABC College logo, background illustration, tagline.
+  - Right: login form with email, password, role dropdown, Remember Me (persist login token if checked in localStorage or else sessionStorage), show/hide password button, demo credentials card, Forgot Password link.
+- Forgot password flow: enter email → simulate sending OTP via mockApi (show animated sending state) → enter OTP → reset password form (Zod validation) → update users in localStorage.
+- Logout: clears sessionStorage token and UI session state. Redirect to login.
+- Smooth Framer Motion transitions between auth pages.
+
+MODULE 2 — Dashboard
+
+- Layout: collapsible sidebar (icons + labels) with tooltip when collapsed. Sticky top navbar with search (with client-side search across students/courses), notification bell (unread count), profile dropdown, dark mode toggle.
+- Dashboard contents:
+  - Animated welcome card: time-based greeting (Good morning/afternoon/evening), student photo, name, ID, course.
+  - 4 gradient stat cards with icons:
+    - Attendance % (circular progress ring)
+    - Current CGPA (mini trend sparkline)
+    - Pending Assignments (count)
+    - Fees Due amount
+  - Today's Timetable horizontal scroll cards
+  - Recent Announcements (latest 3 clickable)
+  - 6-month Attendance Recharts line chart
+  - Quick Actions (Apply Leave, Pay Fees, View Marks, Submit Assignment) — all wired to routes/modals
+- Implement skeleton loaders on initial hydration and show toasts for actions.
+
+MODULE 3 — Academics
+
+- Courses card grid: each course shows name, code, credits, faculty, progress bar (completion).
+- Syllabus accordion per course with units/topics and a Download PDF dummy button (generate small PDF client-side or link to static dummy file).
+- Marks:
+  - Table: subject, internal, external, total, grade (color-coded)
+  - Semester Results: tabs per semester with GPA/SGPA/CGPA and download marksheet (PDF)
+  - Grade distribution bar chart (Recharts)
+
+MODULE 4 — Attendance
+
+- Overview with overall percent and visual warning if < 75% (prominent).
+- Subject-wise breakdown table with attended, total, percentage.
+- Daily Logs calendar view: color-coded days (green present, red absent, yellow leave). Use a calendar component or custom grid.
+- Leave Requests:
+  - Form: reason, from/to date, type (medical/personal), optional document upload (store file as base64 in localStorage).
+  - Submit -> adds to localStorage with Pending status.
+  - Leave history table with status badges (Pending/Approved/Rejected). Implement ability for Faculty/Admin to Approve/Reject (change status).
+
+MODULE 5 — Fees
+
+- Overview: total, paid, due, next due date.
+- Payment History: table with date, type, amount, transaction id, receipt download (generate client-side PDF).
+- Simulated online payment modal: choose UPI/Card/Netbanking → show processing animation (mockApi) → success screen with generated transaction and receipt → write transaction to localStorage and update Fees data.
+- Fee breakdown pie chart (tuition, hostel, library, exam, misc).
+- Download receipt per transaction (PDF).
+
+MODULE 6 — Timetable
+
+- Weekly grid (Mon–Sat, 9AM–5PM) color-coded subject blocks, responsive layout (mobile stacked).
+- Exam schedule cards with countdown timers to exam date.
+- Print and Download as PDF of timetable / exam schedule (client-side).
+- Filter by week/semester.
+
+MODULE 7 — Assignments
+
+- Pending assignments cards showing subject, title, brief, deadline countdown, CTA to submit.
+- Drag-and-drop file upload; store filename and base64 content in localStorage; multiple submissions allowed (store timestamp).
+- Submitted table with date, status, marks if graded.
+- Red warning on assignment cards if deadline < 24 hours.
+- Download brief button (PDF or text).
+
+MODULE 8 — Library
+
+- Books Issued cards with title, author, issue date, due date, auto fine calculation (per day rate) if overdue.
+- Search library with 30+ mock books and filters (author, category).
+- Request Book button: adds request to a request list in localStorage.
+- History of previously issued books (localStorage).
+- Fine calculator UI.
+
+MODULE 9 — Notifications
+
+- Tabs: Circulars / Events / Holidays.
+- Notification cards: category badge, date, title, description, optional attachment, Mark as Read toggle.
+- Unread count badge in navbar updates in real time.
+- Filters by category and date range. Persist read/unread state in localStorage.
+
+MODULE 10 — Profile
+
+- Editable Personal Info form (photo upload — store base64, name, roll no, DOB, blood group, contact info, address, parent info).
+- Documents upload/view (Aadhaar, 10th, 12th) stored as base64.
+- Digital ID Card with flip animation: front shows photo + details; back shows QR + barcode (generated client-side) + emergency contact. Allow download as PNG.
+- Change Password with current password check, Zod validation, and update in localStorage.
+- Save confirmation animations and toasts.
+
+Cross-cutting UI/UX requirements
+
+- All routes protected appropriately; 404 page animated and creative.
+- Accessibility: ARIA labels, keyboard navigability for forms, modal focus trap, skip-to-content link.
+- Responsive design across mobile/tablet/desktop breakpoints.
+- Dark mode toggle saved to localStorage.
+- Skeleton loaders for each route while hydrating data from seed/localStorage.
+- Toast notifications via Sonner for success/failure of actions.
+- Micro-interactions: button hover states, card tilt on hover, ripple on clicks where appropriate, animated gradients for hero banners.
+- All images/illustrations can be local SVGs or data URIs; do not depend on external image hosts.
+
+Developer & QA checklist (must pass all)
+Before marking this task complete, ensure:
+
+1. All pages and routes exist and are reachable via React Router v6 routes.
+2. No console warnings/errors in dev console. No failed imports. No ESLint/TypeScript type errors.
+3. No “coming soon”, “placeholder”, or empty pages. No TODO comments.
+4. All CRUD operations (create/update/delete/read) for students, courses, marks, attendance, fees, assignments, library, notifications persist to localStorage and survive refresh.
+5. Seed hydration occurs automatically on first load only. Subsequent loads preserve modifications.
+6. Session login token stored in sessionStorage (or localStorage if Remember Me), and logout clears it.
+7. Demo credentials work and are listed on login page.
+8. Dark mode persists.
+9. Responsive at breakpoints and usable with keyboard navigation.
+10. Generate a README.md with:
+  - Setup and install steps (npm/yarn)
+  - Run dev server and build commands
+  - Demo credentials
+  - Explanation of storage behavior and where seed files are
+11. App title set to “ABC College | Student Portal” and favicon included.
+
+Implementation order and instructions (follow exactly)
+
+1. Create repo skeleton with Vite + React + TypeScript, Tailwind configured, fonts imported, shadcn structure scaffolded.
+2. Add src/data seed JSON files.
+3. Implement src/lib/storage.ts and a simple mockApi.ts (with setTimeouts for simulated latency).
+4. Implement AuthContext + useAuth hook and session handling.
+5. Build Auth pages and flows (login, forgot, reset) and demo credentials panel.
+6. Create layout (Sidebar, Navbar, Footer) including dark mode toggle and sidebar collapse behavior persisted in session/localStorage.
+7. Implement Dashboard and its widgets (charts, stats, timetable preview).
+8. Implement Academics module: courses, syllabus, marks.
+9. Implement Attendance module: overview, calendar, leave requests.
+10. Implement Fees module: overview, simulated payments, receipts.
+11. Implement Timetable module: weekly grid and exam schedule.
+12. Implement Assignments module: upload, submissions, brief download.
+13. Implement Library module: search, request, fine calc.
+14. Implement Notifications module: CRUD read/unread, filters.
+15. Implement Profile module: edits, document uploads, digital ID generation.
+16. Polish UI: animations across interactions, skeletons, micro-interactions, ARIA.
+17. Test thoroughly: cross-role access, CRUD, file uploads (base64), payment simulation, OTP reset, PDF downloads, localStorage persistence.
+18. Create README.md, add favicon, set title, test production build.
+
+Deliverable format
+
+- A complete project folder structure as above (files with working code).
+- README.md with instructions and demo credentials.
+- Provide a short test plan of 10 steps that a reviewer can follow to verify core functionality (login as each role, test CRUD for one entity, simulate payment, upload document, change theme, test seed hydration, etc.).
+
+Acceptance criteria (final gate)
+
+- The app builds and runs with npm/yarn dev and npm/yarn build without errors.
+- No open TODOs nor placeholder pages.
+- All routes function and all listed features work end-to-end using only client-side storage.
+- All console logs/warnings eliminated.
+
+Important: do not create or rely on any server-side code or external persistent services. All data interactions must be implemented on the client using the storage helpers above and seed files. Think step-by-step, and produce the full repository — structure first, then features module-by-module in the order specified.

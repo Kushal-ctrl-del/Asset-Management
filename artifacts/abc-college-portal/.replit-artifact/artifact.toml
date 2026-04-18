@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "ABC College Student Portal"
+version = "1.0.0"
+id = "artifacts/abc-college-portal"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22510
+
+[services.development]
+run = "pnpm --filter @workspace/abc-college-portal run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/abc-college-portal", "run", "build" ]
+publicDir = "artifacts/abc-college-portal/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22510"
+BASE_PATH = "/"
