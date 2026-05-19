@@ -1,0 +1,62 @@
+[
+  {
+    "code": "CS201",
+    "subject": "Data Structures",
+    "faculty": "Dr. Priya Menon",
+    "credits": 4,
+    "syllabus": [
+      { "unit": "Unit 1", "topics": ["Arrays", "Linked Lists", "Stacks"] },
+      { "unit": "Unit 2", "topics": ["Queues", "Trees", "Graphs"] }
+    ]
+  },
+  {
+    "code": "CS202",
+    "subject": "Operating Systems",
+    "faculty": "Prof. Arjun Sen",
+    "credits": 4,
+    "syllabus": [
+      { "unit": "Unit 1", "topics": ["Processes", "Threads", "CPU Scheduling"] },
+      { "unit": "Unit 2", "topics": ["Memory Management", "File Systems"] }
+    ]
+  },
+  {
+    "code": "CS203",
+    "subject": "Database Systems",
+    "faculty": "Dr. Leena D'Souza",
+    "credits": 3,
+    "syllabus": [
+      { "unit": "Unit 1", "topics": ["ER Model", "Relational Algebra", "SQL"] },
+      { "unit": "Unit 2", "topics": ["Normalization", "Transactions"] }
+    ]
+  },
+  {
+    "code": "MA204",
+    "subject": "Discrete Mathematics",
+    "faculty": "Prof. Raghav Rao",
+    "credits": 3,
+    "syllabus": [
+      { "unit": "Unit 1", "topics": ["Set Theory", "Logic", "Relations"] },
+      { "unit": "Unit 2", "topics": ["Graph Theory", "Combinatorics"] }
+    ]
+  },
+  {
+    "code": "CS205",
+    "subject": "Computer Networks",
+    "faculty": "Dr. Priya Menon",
+    "credits": 3,
+    "syllabus": [
+      { "unit": "Unit 1", "topics": ["OSI Model", "Physical Layer", "Data Link Layer"] },
+      { "unit": "Unit 2", "topics": ["Network Layer", "Transport Layer", "Application Layer"] }
+    ]
+  },
+  {
+    "code": "EC206",
+    "subject": "Digital Electronics",
+    "faculty": "Dr. Leena D'Souza",
+    "credits": 3,
+    "syllabus": [
+      { "unit": "Unit 1", "topics": ["Boolean Algebra", "Logic Gates", "Combinational Circuits"] },
+      { "unit": "Unit 2", "topics": ["Sequential Circuits", "Registers", "Counters"] }
+    ]
+  }
+]

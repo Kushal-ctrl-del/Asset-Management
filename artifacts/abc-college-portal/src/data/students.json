@@ -1,0 +1,68 @@
+[
+  {
+    "id": "u1",
+    "name": "Aarav Sharma",
+    "email": "student@abc.edu",
+    "password": "student123",
+    "role": "Student",
+    "phone": "9876543210",
+    "bloodGroup": "O+",
+    "address": "123 MG Road, Bangalore",
+    "semester": 4,
+    "rollNumber": "CS24001"
+  },
+  {
+    "id": "u2",
+    "name": "Nisha Iyer",
+    "email": "nisha@abc.edu",
+    "password": "student123",
+    "role": "Student",
+    "semester": 4,
+    "rollNumber": "CS24002"
+  },
+  {
+    "id": "u3",
+    "name": "Kabir Khan",
+    "email": "kabir@abc.edu",
+    "password": "student123",
+    "role": "Student",
+    "semester": 4,
+    "rollNumber": "CS24003"
+  },
+  {
+    "id": "f1",
+    "name": "Dr. Priya Menon",
+    "email": "faculty@abc.edu",
+    "password": "faculty123",
+    "role": "Faculty",
+    "department": "Computer Science",
+    "employeeId": "EMP101"
+  },
+  {
+    "id": "f2",
+    "name": "Prof. Raghav Rao",
+    "email": "raghav@abc.edu",
+    "password": "faculty123",
+    "role": "Faculty",
+    "department": "Mathematics",
+    "employeeId": "EMP102"
+  },
+  {
+    "id": "f3",
+    "name": "Dr. Leena D'Souza",
+    "email": "leena@abc.edu",
+    "password": "faculty123",
+    "role": "Faculty",
+    "department": "Electronics",
+    "employeeId": "EMP103"
+  },
+  {
+    "id": "a1",
+    "name": "Anita Verma",
+    "email": "admin@abc.edu",
+    "password": "admin123",
+    "role": "Admin",
+    "department": "Administration",
+    "employeeId": "ADM001"
+  }
+]

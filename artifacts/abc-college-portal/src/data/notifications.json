@@ -1,0 +1,26 @@
+[
+  {
+    "id": "n1",
+    "title": "Semester 4 Exam Schedule Released",
+    "description": "The final exam schedule for Semester 4 has been published. Please check the timetable section.",
+    "category": "Circular",
+    "date": "2026-05-15",
+    "readBy": ["u1", "u2"]
+  },
+  {
+    "id": "n2",
+    "title": "Tech Fest 2026",
+    "description": "Annual tech fest registrations are now open. Register before 25th May.",
+    "category": "Event",
+    "date": "2026-05-18",
+    "readBy": []
+  },
+  {
+    "id": "n3",
+    "title": "Summer Break Announcement",
+    "description": "College will remain closed for summer break starting June 1st.",
+    "category": "Holiday",
+    "date": "2026-05-10",
+    "readBy": ["u1"]
+  }
+]

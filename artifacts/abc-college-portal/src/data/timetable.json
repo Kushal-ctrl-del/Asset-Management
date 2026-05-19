@@ -1,0 +1,50 @@
+[
+  {
+    "id": "tt1",
+    "day": "Monday",
+    "time": "09:00 AM - 10:00 AM",
+    "subject": "Data Structures",
+    "room": "Room 301",
+    "type": "Class"
+  },
+  {
+    "id": "tt2",
+    "day": "Monday",
+    "time": "10:00 AM - 11:00 AM",
+    "subject": "Database Systems",
+    "room": "Room 302",
+    "type": "Class"
+  },
+  {
+    "id": "tt3",
+    "day": "Tuesday",
+    "time": "09:00 AM - 10:00 AM",
+    "subject": "Computer Networks",
+    "room": "Room 301",
+    "type": "Class"
+  },
+  {
+    "id": "tt4",
+    "day": "Wednesday",
+    "time": "11:00 AM - 12:00 PM",
+    "subject": "Discrete Mathematics",
+    "room": "Room 303",
+    "type": "Class"
+  },
+  {
+    "id": "ex1",
+    "date": "2026-05-25",
+    "time": "10:00 AM - 01:00 PM",
+    "subject": "Data Structures",
+    "room": "Exam Hall A",
+    "type": "Exam"
+  },
+  {
+    "id": "ex2",
+    "date": "2026-05-27",
+    "time": "10:00 AM - 01:00 PM",
+    "subject": "Operating Systems",
+    "room": "Exam Hall B",
+    "type": "Exam"
+  }
+]

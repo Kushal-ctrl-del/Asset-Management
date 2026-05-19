@@ -1,0 +1,23 @@
+[
+  {
+    "id": "a1",
+    "studentId": "u1",
+    "subject": "Data Structures",
+    "date": "2026-05-18",
+    "status": "Present"
+  },
+  {
+    "id": "a2",
+    "studentId": "u1",
+    "subject": "Database Systems",
+    "date": "2026-05-18",
+    "status": "Present"
+  },
+  {
+    "id": "a3",
+    "studentId": "u1",
+    "subject": "Data Structures",
+    "date": "2026-05-17",
+    "status": "Absent"
+  }
+]

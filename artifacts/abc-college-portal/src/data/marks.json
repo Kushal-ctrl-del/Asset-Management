@@ -1,0 +1,29 @@
+[
+  {
+    "studentId": "u1",
+    "subject": "Data Structures",
+    "semester": 4,
+    "internal": 45,
+    "external": 48,
+    "total": 93,
+    "grade": "O"
+  },
+  {
+    "studentId": "u1",
+    "subject": "Operating Systems",
+    "semester": 4,
+    "internal": 42,
+    "external": 45,
+    "total": 87,
+    "grade": "A+"
+  },
+  {
+    "studentId": "u2",
+    "subject": "Data Structures",
+    "semester": 4,
+    "internal": 40,
+    "external": 42,
+    "total": 82,
+    "grade": "A"
+  }
+]

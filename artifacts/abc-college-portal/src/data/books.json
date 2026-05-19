@@ -1,0 +1,37 @@
+[
+  {
+    "id": "b1",
+    "title": "Introduction to Algorithms",
+    "author": "Thomas H. Cormen",
+    "category": "Programming",
+    "isbn": "978-0262033848",
+    "status": "Available"
+  },
+  {
+    "id": "b2",
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "category": "Software Engineering",
+    "isbn": "978-0132350884",
+    "status": "Issued",
+    "issuedTo": "u1",
+    "issueDate": "2026-05-01",
+    "dueDate": "2026-05-15"
+  },
+  {
+    "id": "b3",
+    "title": "Computer Networking",
+    "author": "James F. Kurose",
+    "category": "Networking",
+    "isbn": "978-0132856201",
+    "status": "Available"
+  },
+  {
+    "id": "b4",
+    "title": "Database System Concepts",
+    "author": "Abraham Silberschatz",
+    "category": "Data Structures",
+    "isbn": "978-0073523323",
+    "status": "Available"
+  }
+]
